@@ -105,7 +105,7 @@ module Fastlane
 
       def self.is_message_success(response)
         if response.code.to_i == 202
-          UI.message("🍾 The message was sent successfully")
+          UI.message("🔔 The card was posted successfully.")
           true
         else
           UI.user_error!("⚠️ An error occurred: #{response.body}")
