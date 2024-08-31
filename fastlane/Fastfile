@@ -18,3 +18,21 @@ lane :test do
     ]
   )
 end
+
+lane :custom do
+  teams_card(
+    workflow_url: "https://prod-130.westeurope.logic.azure.com:443/workflows/b61f4163876e46bd841ed3c19d9d9d3a/triggers/manual/paths/invoke?api-version=2016-06-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=ajp4_dPErpjCZVdlM0vu_eiwjtPxpIZyMhaIH4HZtVc",
+    custom_card: {
+      "type" => "AdaptiveCard",
+      "body" => [
+        {
+          "type" => "TextBlock",
+          "text" => "Custom message content!",
+          "wrap" => true
+        }
+      ],
+      "$schema" => "http://adaptivecards.io/schemas/adaptive-card.json",
+      "version" => "1.2"
+    }
+  )
+end

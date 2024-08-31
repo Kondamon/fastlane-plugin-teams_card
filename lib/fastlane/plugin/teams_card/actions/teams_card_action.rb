@@ -12,17 +12,20 @@ module Fastlane
 
       # Build the payload for the Teams message
       def self.build_payload(params)
+        # Use custom card if provided, otherwise build the card dynamically
+        content = params[:custom_card] || {
+          "type" => "AdaptiveCard",
+          "body" => build_card_body(params),
+          "$schema" => "http://adaptivecards.io/schemas/adaptive-card.json",
+          "version" => "1.2"
+        }
+
         payload = {
           "type" => "message",
           "attachments" => [{
             "contentType" => "application/vnd.microsoft.card.adaptive",
             "contentUrl" => nil,
-            "content" => {
-              "type" => "AdaptiveCard",
-              "body" => build_card_body(params),
-              "$schema" => "http://adaptivecards.io/schemas/adaptive-card.json",
-              "version" => "1.2"
-            }
+            "content" => content
           }]
         }
 
@@ -107,13 +110,12 @@ module Fastlane
 
       # Add actions to the payload if needed
       def self.add_actions_to_payload(payload, open_url)
-        payload["attachments"][0]["content"]["actions"] = [
-          {
-            "type" => "Action.OpenUrl",
-            "title" => "Open",
-            "url" => open_url
-          }
-        ]
+        payload["attachments"][0]["content"]["actions"] ||= []
+        payload["attachments"][0]["content"]["actions"] << {
+          "type" => "Action.OpenUrl",
+          "title" => "Open",
+          "url" => open_url
+        }
       end
 
       # Send the message to the Teams Webhook URL
@@ -174,6 +176,12 @@ module Fastlane
                                        description: "Optional url for a button at bottom of card",
                                        optional: true),
 
+          FastlaneCore::ConfigItem.new(key: :custom_card,
+                                       env_name: "TEAMS_MESSAGE_CUSTOM_CARD",
+                                       description: "Custom Adaptive Card JSON object",
+                                       optional: true,
+                                       type: Hash),
+
           FastlaneCore::ConfigItem.new(key: :workflow_url,
                                        env_name: "TEAMS_MESSAGE_TEAMS_URL",
                                        sensitive: true,
@@ -185,48 +193,7 @@ module Fastlane
         ]
       end
 
-      def self.example_code
-        [
-          'teams_card(
-            workflow_url: "https://your.logic.azure.com:443/workflows/1234567890",
-            title: "Notification Title",
-            text: "A new release is ready for testing!",
-            image: "https://raw.githubusercontent.com/fastlane/boarding/master/app/assets/images/fastlane.png",
-            image_title: "Fastlane",
-            open_url: "https://beta.itunes.apple.com/v1/app/_YOUR_APP_ID_",
-            facts: [
-              {
-                "title" => "Environment",
-                "value" => "Staging"
-              },
-              {
-                "title" => "Release",
-                "value" => "1.0.3"
-              }
-            ]
-          )'
-        ]
-      end
-
-      def self.description
-        "Easily send a message to a Microsoft Teams channel or group chat through the Power Automate Webhook connector"
-      end
-
-      def self.details
-        "Send a message to a specific channel, group chat or chat on your Microsoft Teams organization via a Workflow of Power Automate"
-      end
-
-      def self.authors
-        ["Kondamon"]
-      end
-
-      def self.return_value
-        # If your method provides a return value, you can describe here what it does
-      end
-
-      def self.is_supported?(platform)
-        true
-      end
+      # Rest of the methods...
     end
   end
 end

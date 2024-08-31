@@ -59,6 +59,32 @@ This code give the following message:
 
 <img src="screenshots/1.png">
 
+### Custom Adaptive cards
+
+You can fully customize your cards by providing a custom JSON for AdaptiveCard. Look at the [templates and information on how to customize cards](https://adaptivecards.io/samples/). Note that MS Teams cannot display the latest versions of the schema!
+
+```ruby
+teams_card(
+    workflow_url: "https://your.logic.azure.com:443/workflows/1234567890",
+    custom_card: {
+      "type" => "AdaptiveCard",
+      "body" => [
+        {
+          "type" => "TextBlock",
+          "text" => "Custom message content!",
+          "wrap" => true
+        }
+      ],
+      "$schema" => "http://adaptivecards.io/schemas/adaptive-card.json",
+      "version" => "1.2"
+    }
+  )
+```
+
+This code give the following message:
+
+<img src="screenshots/2.png">
+
 ### Help
 
 Once installed, information and help for an action can be printed out with this command:
@@ -77,6 +103,7 @@ fastlane action teams_card
 | `text`      | The message you want to display                     | `TEAMS_MESSAGE_TEXT`      |         |
 | `facts`     | Optional facts (assigned to, due date, status, branch, environment, etc.) | `TEAMS_MESSAGE_FACTS` | `[]`    |
 | `open_url`  | Optional URL for a button at the bottom of the card | `TEAMS_MESSAGE_OPEN_URL`  |         |
+| `custom_card`  | Optional JSON to fully customize your card. | `TEAMS_MESSAGE_CUSTOM_CARD`  |         |
 | `workflow_url` | The URL of the incoming Webhook you created in Workflows app | `TEAMS_MESSAGE_WORKFLOW_URL` | |
 
 

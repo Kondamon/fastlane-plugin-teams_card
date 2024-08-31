@@ -37,6 +37,34 @@ describe Fastlane::Actions::TeamsCardAction do
       # Call the run method with the valid params
       Fastlane::Actions::TeamsCardAction.run(params)
     end
+
+    it 'uses the provided custom adaptive card' do
+      # Define the custom card JSON
+      custom_card = {
+        "type" => "AdaptiveCard",
+        "body" => [
+          {
+            "type" => "TextBlock",
+            "text" => "Custom message content!",
+            "wrap" => true
+          }
+        ],
+        "$schema" => "http://adaptivecards.io/schemas/adaptive-card.json",
+        "version" => "1.2"
+      }
+
+      # Parameters to test
+      params = {
+        workflow_url: "https://your.logic.azure.com:443/workflows/1234567890",
+        custom_card: custom_card
+      }
+
+      # Execute the action
+      result = Fastlane::Actions::TeamsCardAction.build_payload(params)
+
+      # Assertions
+      expect(result["attachments"][0]["content"]).to eq(custom_card)
+    end
   end
 
   describe 'Schema Validation for Adaptive Card' do
