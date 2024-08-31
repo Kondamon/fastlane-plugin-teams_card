@@ -1,0 +1,101 @@
+# teams_card plugin
+
+[![fastlane Plugin Badge](https://rawcdn.githack.com/fastlane/fastlane/master/fastlane/assets/plugin-badge.svg)](https://rubygems.org/gems/fastlane-plugin-teams_card)
+
+## Getting Started
+
+This project is a [_fastlane_](https://github.com/fastlane/fastlane) plugin. To get started with `fastlane-plugin-teams_card`, add it to your project by running:
+
+```bash
+fastlane add_plugin teams_card
+```
+
+## About teams_card
+
+With this plugin you will be able to send a message on a microsoft teams channel, group chat or chat.
+
+Beforehand you must Set up an incoming webhook workflow from a template in Microsoft Teams channel of your choice. You can follow this documentation to help you do this: [Incoming Webhook](https://support.microsoft.com/en-us/office/create-incoming-webhooks-with-workflows-for-microsoft-teams-8ae491c7-0394-4861-ba59-055e33f75498)
+
+`teams_card` allows you to send a fully custom message to a specific incoming webhook.
+
+## Usage
+
+```ruby
+teams_card(
+    workflow_url: 'https://your.logic.azure.com:443/workflows/1234567890',
+    text: 'A new release is ready for testing!',
+    image: 'https://raw.githubusercontent.com/fastlane/boarding/master/app/assets/images/fastlane.png',
+    image_title: 'Fastlane',
+    ]
+  )
+```
+
+or
+
+```ruby
+teams_card(
+    workflow_url: 'https://your.logic.azure.com:443/workflows/1234567890',
+    title: 'Notification Title',
+    text: 'A new release is ready for testing!',
+    image: 'https://raw.githubusercontent.com/fastlane/boarding/master/app/assets/images/fastlane.png',
+    image_title: 'Fastlane',
+    open_url: 'https://beta.itunes.apple.com/v1/app/_YOUR_APP_ID_',
+    facts: [
+      {
+        'title' => 'Environment',
+        'value' => 'Staging'
+      },
+      {
+        'title' => 'Release',
+        'value' => '1.0.3'
+      }
+    ]
+  )
+```
+
+This code give the following message:
+
+<img src="screenshots/1.png">
+
+### Help
+
+Once installed, information and help for an action can be printed out with this command:
+
+```bash
+fastlane action teams_card
+```
+
+### `teams_card`
+
+| Key         | Description                                        | Env Var(s)                | Default |
+|-------------|----------------------------------------------------|---------------------------|---------|
+| `title`     | The title that should be displayed on Teams         | `TEAMS_MESSAGE_TITLE`     |         |
+| `image`     | Displays an image on your activity (project logo, company logo, etc.) | `TEAMS_MESSAGE_IMAGE` |         |
+| `image_title` | Displays a title next to your image               | `TEAMS_MESSAGE_IMAGE_TITLE` |       |
+| `text`      | The message you want to display                     | `TEAMS_MESSAGE_TEXT`      |         |
+| `facts`     | Optional facts (assigned to, due date, status, branch, environment, etc.) | `TEAMS_MESSAGE_FACTS` | `[]`    |
+| `open_url`  | Optional URL for a button at the bottom of the card | `TEAMS_MESSAGE_OPEN_URL`  |         |
+| `workflow_url` | The URL of the incoming Webhook you created in Workflows app | `TEAMS_MESSAGE_WORKFLOW_URL` | |
+
+
+## Example
+
+Check out the [example `Fastfile`](fastlane/Fastfile) to see how to use this plugin. Try it by cloning the repo, running `fastlane install_plugins` and `bundle exec fastlane test`.
+
+**Note to author:** Please set up a sample project to make it easy for users to explore what your plugin does. Provide everything that is necessary to try out the plugin in this project (including a sample Xcode/Android project if necessary)
+
+## Issues and Feedback
+
+For any other issues and feedback about this plugin, please submit it to this repository.
+
+## Troubleshooting
+
+If you have trouble using plugins, check out the [Plugins Troubleshooting](https://docs.fastlane.tools/plugins/plugins-troubleshooting/) guide.
+
+## Using _fastlane_ Plugins
+
+For more information about how the `fastlane` plugin system works, check out the [Plugins documentation](https://docs.fastlane.tools/plugins/create-plugin/).
+
+## About _fastlane_
+
+_fastlane_ is the easiest way to automate beta deployments and releases for your iOS and Android apps. To learn more, check out [fastlane.tools](https://fastlane.tools).
