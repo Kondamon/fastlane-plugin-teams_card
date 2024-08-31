@@ -1,6 +1,8 @@
-# teams_card plugin
+# Microsoft Teams fastlane teams_card plugin via Workflow
 
 [![fastlane Plugin Badge](https://rawcdn.githack.com/fastlane/fastlane/master/fastlane/assets/plugin-badge.svg)](https://rubygems.org/gems/fastlane-plugin-teams_card)
+
+> ⚠️ Note: This plugin utilizes the latest **Workflows** app (rather than the [now-retired Office connectors](https://devblogs.microsoft.com/microsoft365dev/retirement-of-office-365-connectors-within-microsoft-teams/) used in other plugins)
 
 ## Getting Started
 
@@ -69,9 +71,9 @@ fastlane action teams_card
 
 | Key         | Description                                        | Env Var(s)                | Default |
 |-------------|----------------------------------------------------|---------------------------|---------|
-| `title`     | The title that should be displayed on Teams         | `TEAMS_MESSAGE_TITLE`     |         |
-| `image`     | Displays an image on your activity (project logo, company logo, etc.) | `TEAMS_MESSAGE_IMAGE` |         |
-| `image_title` | Displays a title next to your image               | `TEAMS_MESSAGE_IMAGE_TITLE` |       |
+| `title`     | Optional title                                     | `TEAMS_MESSAGE_TITLE`     |         |
+| `image`     | Optional image on your activity (project logo, company logo, etc.) | `TEAMS_MESSAGE_IMAGE` |         |
+| `image_title` | Optional title next to your image               | `TEAMS_MESSAGE_IMAGE_TITLE` |       |
 | `text`      | The message you want to display                     | `TEAMS_MESSAGE_TEXT`      |         |
 | `facts`     | Optional facts (assigned to, due date, status, branch, environment, etc.) | `TEAMS_MESSAGE_FACTS` | `[]`    |
 | `open_url`  | Optional URL for a button at the bottom of the card | `TEAMS_MESSAGE_OPEN_URL`  |         |
