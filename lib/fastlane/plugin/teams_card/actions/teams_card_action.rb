@@ -6,6 +6,12 @@ module Fastlane
   module Actions
     class TeamsCardAction < Action
       def self.run(params)
+        payload = build_payload(params)
+        send_message(params[:workflow_url], payload)
+      end
+
+      # Build the payload for the Teams message
+      def self.build_payload(params)
         payload = {
           "type" => "message",
           "attachments" => [{
@@ -13,84 +19,104 @@ module Fastlane
             "contentUrl" => nil,
             "content" => {
               "type" => "AdaptiveCard",
-              "body" => [
-                {
-                  "type" => "TextBlock",
-                  "text" => params[:text],
-                  "wrap" => true
-                },
-                {
-                  "type" => "FactSet",
-                  "facts" => params[:facts]
-                }
-              ],
+              "body" => build_card_body(params),
               "$schema" => "http://adaptivecards.io/schemas/adaptive-card.json",
               "version" => "1.2"
             }
           }]
         }
 
-        if params[:image] || params[:image_title]
-          payload["attachments"][0]["content"]["body"].unshift(
-            {
-              "type" => "ColumnSet",
-              "columns" => [
-                {
-                  "type" => "Column",
-                  "items" => [
-                    {
-                      "type" => "Image",
-                      "style" => "Person",
-                      "url" => params[:image],
-                      "size" => "Small"
-                    }
-                  ],
-                  "width" => "auto"
-                },
-                {
-                  "type" => "Column",
-                  "items" => [
-                    {
-                      "type" => "TextBlock",
-                      "weight" => "Bolder",
-                      "text" => params[:image_title],
-                      "wrap" => true
-                    }
-                  ],
-                  "width" => "stretch",
-                  "horizontalAlignment" => "Left",
-                  "verticalContentAlignment" => "Center"
-                }
-              ]
-            }
-          )
-        end
-
-        if params[:title]
-          payload["attachments"][0]["content"]["body"].unshift(
-            {
-              "type" => "TextBlock",
-              "size" => "large",
-              "weight" => "bolder",
-              "text" => params[:title],
-              "wrap" => true
-            }
-          )
-        end
-
-        if params[:open_url]
-          payload["attachments"][0]["content"]["actions"] = [
-            {
-              "type" => "Action.OpenUrl",
-              "title" => "Open",
-              "url" => params[:open_url]
-            }
-          ]
-        end
-
-        send_message(params[:workflow_url], payload)
+        add_actions_to_payload(payload, params[:open_url]) if params[:open_url]
+        payload
       end
 
+      # Construct the body of the Adaptive Card
+      def self.build_card_body(params)
+        body = [
+          build_text_block(params[:text]),
+          build_fact_set(params[:facts])
+        ]
+
+        body.unshift(build_image_column_set(params[:image], params[:image_title])) if params[:image] || params[:image_title]
+        body.unshift(build_title_block(params[:title])) if params[:title]
+        body
+      end
+
+      # Create a text block for the card
+      def self.build_text_block(text)
+        {
+          "type" => "TextBlock",
+          "text" => text,
+          "wrap" => true
+        }
+      end
+
+      # Create a fact set for the card
+      def self.build_fact_set(facts)
+        {
+          "type" => "FactSet",
+          "facts" => facts
+        }
+      end
+
+      # Create an image and title column set for the card
+      def self.build_image_column_set(image, image_title)
+        {
+          "type" => "ColumnSet",
+          "columns" => [
+            {
+              "type" => "Column",
+              "items" => [
+                {
+                  "type" => "Image",
+                  "style" => "Person",
+                  "url" => image,
+                  "size" => "Small"
+                }
+              ],
+              "width" => "auto"
+            },
+            {
+              "type" => "Column",
+              "items" => [
+                {
+                  "type" => "TextBlock",
+                  "weight" => "Bolder",
+                  "text" => image_title,
+                  "wrap" => true
+                }
+              ],
+              "width" => "stretch",
+              "horizontalAlignment" => "Left",
+              "verticalContentAlignment" => "Center"
+            }
+          ]
+        }
+      end
+
+      # Create a title block for the card
+      def self.build_title_block(title)
+        {
+          "type" => "TextBlock",
+          "size" => "large",
+          "weight" => "bolder",
+          "text" => title,
+          "wrap" => true
+        }
+      end
+
+      # Add actions to the payload if needed
+      def self.add_actions_to_payload(payload, open_url)
+        payload["attachments"][0]["content"]["actions"] = [
+          {
+            "type" => "Action.OpenUrl",
+            "title" => "Open",
+            "url" => open_url
+          }
+        ]
+      end
+
+      # Send the message to the Teams Webhook URL
       def self.send_message(url, payload)
         require 'net/http'
         require 'uri'
@@ -104,6 +130,7 @@ module Fastlane
         is_message_success(response)
       end
 
+      # Check if the message was successfully posted
       def self.is_message_success(response)
         if response.code.to_i == 202
           UI.message("🔔 The card was posted successfully.")
