@@ -1,4 +1,5 @@
 require 'fastlane/action'
+require 'fastlane_core'
 require_relative '../helper/teams_card_helper'
 
 module Fastlane
@@ -118,34 +119,34 @@ module Fastlane
                                        env_name: "TEAMS_MESSAGE_TITLE",
                                        optional: true,
                                        description: "The title that should be displayed on Teams"),
-          
+
           FastlaneCore::ConfigItem.new(key: :image,
                                        env_name: "TEAMS_MESSAGE_IMAGE",
                                        sensitive: true,
                                        optional: true,
                                        description: "Displays an image on your activity (project logo, company logo, ...)"),
-          
+
           FastlaneCore::ConfigItem.new(key: :image_title,
                                        env_name: "TEAMS_MESSAGE_IMAGE_TITLE",
                                        optional: true,
                                        description: "Displays a title next to your image"),
-          
+
           FastlaneCore::ConfigItem.new(key: :text,
                                        env_name: "TEAMS_MESSAGE_TEXT",
                                        description: "The message you want to display",
                                        optional: false),
-          
+
           FastlaneCore::ConfigItem.new(key: :facts,
                                        type: Array,
                                        env_name: "TEAMS_MESSAGE_FACTS",
                                        description: "Optional facts (assigned to, due date, status, branch, environment, ...)",
                                        default_value: []),
-          
+
           FastlaneCore::ConfigItem.new(key: :open_url,
                                        env_name: "TEAMS_MESSAGE_OPEN_URL",
                                        description: "Optional url for a button at bottom of card",
                                        optional: true),
-          
+
           FastlaneCore::ConfigItem.new(key: :workflow_url,
                                        env_name: "TEAMS_MESSAGE_TEAMS_URL",
                                        sensitive: true,

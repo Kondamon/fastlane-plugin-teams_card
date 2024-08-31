@@ -1,3 +1,6 @@
+require 'net/http'
+require 'uri'
+
 describe Fastlane::Actions::TeamsCardAction do
   describe '#run' do
     it 'prints a message' do
@@ -16,11 +19,19 @@ describe Fastlane::Actions::TeamsCardAction do
           }
         ]
       }
-      
-      allow(Fastlane::Actions::TeamsCardAction).to receive(:send_message).and_return(true)
 
-      # Expect the Fastlane UI to receive a message
       expect(Fastlane::UI).to receive(:message).with("🔔 The card was posted successfully.")
+
+      # Mock the response object to return a 202 status code
+      mock_response = instance_double("Net::HTTPResponse", code: '202')
+
+      # Mock http call
+      mock_http = instance_double("Net::HTTP")
+      allow(Net::HTTP).to receive(:new).and_return(mock_http)
+      allow(mock_http).to receive(:use_ssl=).with(true)
+      allow(mock_http).to receive(:request).and_return(mock_response)
+
+      allow(Net::HTTP).to receive(:start).and_return(mock_response)
 
       # Call the run method with the valid params
       Fastlane::Actions::TeamsCardAction.run(params)
