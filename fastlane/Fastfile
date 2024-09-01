@@ -1,6 +1,14 @@
+# load variables from .env file in the root if it exists
+if File.exist?('../.env')
+  open('../.env', 'r').readlines.each do |l|
+    kv = l.split('=')
+    ENV[kv[0]] = kv[1].chomp
+  end
+end
+
 lane :test do
   teams_card(
-    workflow_url: 'https://your.logic.azure.com:443/workflows/1234567890',
+    workflow_url: ENV.fetch("TEAMS_MESSAGE_WORKFLOW_URL"),
     title: 'Notification Title',
     text: 'A new release is ready for testing!',
     image: 'https://raw.githubusercontent.com/fastlane/boarding/master/app/assets/images/fastlane.png',
