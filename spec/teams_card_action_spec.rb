@@ -38,6 +38,26 @@ describe Fastlane::Actions::TeamsCardAction do
       Fastlane::Actions::TeamsCardAction.run(params)
     end
 
+    it "raises an error if no workflow_url was given" do
+      expect do
+        Fastlane::FastFile.new.parse("lane :test do
+          teams_card({
+            text: 'A new release is ready for testing!'
+          })
+        end").runner.execute(:test)
+      end.to raise_error("Invalid URL, must start with https://")
+    end
+
+    it "raises an error if no text was given" do
+      expect do
+        Fastlane::FastFile.new.parse("lane :test do
+          teams_card({
+            workflow_url: 'https://your.logic.azure.com:443/workflows/1234567890'
+          })
+        end").runner.execute(:test)
+      end.to raise_error("No value found for 'text'")
+    end
+
     it 'uses the provided custom adaptive card' do
       # Define the custom card JSON
       custom_card = {
