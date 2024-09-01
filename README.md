@@ -1,4 +1,4 @@
-# Microsoft Teams fastlane teams_card plugin via Workflow
+# Microsoft Teams `fastlane` plugin via Workflow
 
 [![fastlane Plugin Badge](https://rawcdn.githack.com/fastlane/fastlane/master/fastlane/assets/plugin-badge.svg)](https://rubygems.org/gems/fastlane-plugin-teams_card)
 
@@ -14,13 +14,14 @@ fastlane add_plugin teams_card
 
 ## About teams_card
 
-With this plugin you will be able to send a message on a microsoft teams channel, group chat or chat.
+With this plugin you will be able to send messages to a Microsoft Teams channel, group chat or chat. This plugin utilizes the latest **Workflows** app (rather than the [now-retired Office connectors](https://devblogs.microsoft.com/microsoft365dev/retirement-of-office-365-connectors-within-microsoft-teams/) used in other plugins).
 
-Beforehand you must Set up an incoming webhook workflow from a template in Microsoft Teams channel of your choice. You can follow this documentation to help you do this: [Incoming Webhook](https://support.microsoft.com/en-us/office/create-incoming-webhooks-with-workflows-for-microsoft-teams-8ae491c7-0394-4861-ba59-055e33f75498)
 
-`teams_card` allows you to send a fully custom message to a specific incoming webhook.
+`teams_card` allows you to send a fully custom message to a specific incoming webhook. You can use a predefined card with optional elements like a title, an image, or a button to open a URL. It's also possible to fully customize the card using JSON. It utilizes [Adaptive Cards](https://adaptivecards.io/samples/).
 
 ## Usage
+
+To get started, first, [set up an incoming webhook workflow from a template](https://support.microsoft.com/en-us/office/create-incoming-webhooks-with-workflows-for-microsoft-teams-8ae491c7-0394-4861-ba59-055e33f75498) in Microsoft Teams.
 
 ```ruby
 teams_card(
@@ -55,7 +56,7 @@ teams_card(
   )
 ```
 
-This code give the following message:
+This code produces the following message:
 
 <img src="screenshots/1.png">
 
@@ -81,7 +82,7 @@ teams_card(
   )
 ```
 
-This code give the following message:
+This code produces the following message:
 
 <img src="screenshots/2.png">
 
