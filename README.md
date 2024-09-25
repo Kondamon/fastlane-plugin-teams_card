@@ -1,6 +1,7 @@
 # Microsoft Teams `fastlane` plugin via Workflow
 
 [![fastlane Plugin Badge](https://rawcdn.githack.com/fastlane/fastlane/master/fastlane/assets/plugin-badge.svg)](https://rubygems.org/gems/fastlane-plugin-teams_card)
+[![Gem Version](https://badge.fury.io/rb/fastlane-plugin-teams_card.svg)](https://badge.fury.io/rb/fastlane-plugin-teams_card)
 
 > ⚠️ Note: This plugin utilizes the latest **Workflows** app (rather than the [now-retired Office connectors](https://devblogs.microsoft.com/microsoft365dev/retirement-of-office-365-connectors-within-microsoft-teams/) used in other plugins)
 
