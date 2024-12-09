@@ -134,7 +134,7 @@ module Fastlane
 
       # Check if the message was successfully posted
       def self.is_message_success(response)
-        if response.code.to_i == 202
+        if response.code.to_i.between?(200, 299)
           UI.message("🔔 The card was posted successfully.")
           true
         else
